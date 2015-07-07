@@ -27,10 +27,12 @@ WORKDIR /root
 VOLUME [ "/var/www/html" ]
 VOLUME [ "/etc/apache2/sites-available" ]
 
-RUN mv /tmp/000-default.conf /etc/apache2/sites-available/
-RUN mv /tmp/default-ssl.conf /etc/apache2/sites-available/
 
 EXPOSE 80
+
+ADD assets /restart
+
+CMD [ "/restart/restart" ]
 
 
 
