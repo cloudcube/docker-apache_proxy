@@ -15,6 +15,8 @@ RUN a2enmod proxy_http proxy_ajp proxy_balancer rewrite headers
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 ADD config/httpd.conf /etc/supervisor/conf.d/httpd.conf
+ADD config/000-default.conf /tmp/000-default.conf
+ADD config/default-ssl.conf /tmp/default-ssl.conf
 
 WORKDIR /etc/apache2/sites-available
 
@@ -25,8 +27,8 @@ WORKDIR /root
 VOLUME [ "/var/www/html" ]
 VOLUME [ "/etc/apache2/sites-available" ]
 
-ADD config/000-default.conf /etc/apache2/sites-available/000-default.conf
-ADD config/000-default.conf /etc/apache2/sites-available/default-ssl.conf
+RUN mv /tmp/000-default.conf /etc/apache2/sites-available/
+RUN mv /tmp/default-ssl.conf /etc/apache2/sites-available/
 
 EXPOSE 80
 
