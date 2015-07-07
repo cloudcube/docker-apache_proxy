@@ -6,6 +6,8 @@ ENV REFRESHED_AT 2015-07-07 07:18
 
 RUN apt-get update -y
 
+RUN apt-get install apache2-mpm-prefork -y
+
 RUN apt-get install apache2 curl -y
 
 RUN a2enmod proxy_http proxy_ajp proxy_balancer rewrite headers
