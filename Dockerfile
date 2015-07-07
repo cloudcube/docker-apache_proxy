@@ -8,14 +8,27 @@ RUN apt-get update -y
 
 RUN apt-get install apache2-mpm-prefork -y
 
-RUN apt-get install apache2 curl -y
+RUN apt-get install apache2 curl git -y
 
 RUN a2enmod proxy_http proxy_ajp proxy_balancer rewrite headers
 
-RUN a2dismod mpm_event && a2enmod mpm_prefork
-
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+ADD config/httpd.conf /etc/supervisor/conf.d/httpd.conf
+
+WORKDIR /etc/apache2/sites-available
+
+RUN rm -rf 000-default.conf default-ssl.conf
+
+WORKDIR /root
+
+VOLUME [ "/var/www/html" ]
+VOLUME [ "/etc/apache2/sites-available" ]
+
+ADD config/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD config/000-default.conf /etc/apache2/sites-available/default-ssl.conf
+
+EXPOSE 80
 
 
 
